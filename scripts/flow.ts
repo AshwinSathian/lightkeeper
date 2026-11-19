@@ -1,6 +1,6 @@
 // Plays a whole 3-ball game with the keyboard (plunge, never flip), then saves initials.
 import { chromium } from 'playwright';
-const url = process.argv[2] ?? 'http://localhost:5174/';
+const url = process.argv[2] ?? 'http://localhost:5173/';
 const browser = await chromium.launch({ args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const errs: string[] = [];

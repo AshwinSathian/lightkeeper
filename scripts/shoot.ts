@@ -1,6 +1,6 @@
 // Screenshots at the sizes we care about, plus console errors. Usage: node scripts/shoot.ts [url] [outdir]
 import { chromium, devices } from 'playwright';
-const url = process.argv[2] ?? 'http://localhost:5174/';
+const url = process.argv[2] ?? 'http://localhost:5173/';
 const out = process.argv[3] ?? 'docs/shots';
 const sizes: [string, number, number, number, boolean][] = [
   ['phone', 390, 844, 3, true], ['phone-land', 844, 390, 3, true], ['tablet', 820, 1180, 2, true], ['tablet-land', 1180, 820, 2, true], ['desktop', 1440, 900, 1, false],

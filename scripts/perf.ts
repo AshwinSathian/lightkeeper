@@ -6,7 +6,7 @@ const page = await ctx.newPage();
 const cdp = await ctx.newCDPSession(page);
 await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
 const t = Date.now();
-await page.goto(process.argv[2] ?? 'http://localhost:5175/');
+await page.goto(process.argv[2] ?? 'http://localhost:4173/');
 await page.waitForFunction(() => document.querySelector('#gl')?.getAttribute('width'));
 console.log('boot to canvas sized', Date.now() - t, 'ms (throttled)');
 await page.waitForTimeout(800);
