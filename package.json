@@ -1,5 +1,28 @@
 {
   "name": "lightkeeper",
+  "version": "1.0.0",
+  "description": "A pinball table for the browser: deterministic 480 Hz physics, a WebGL 2 renderer with no image files, and replays that fit in a link.",
+  "homepage": "https://lightkeeper.ashwinsathian.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshwinSathian/lightkeeper.git"
+  },
+  "bugs": "https://github.com/AshwinSathian/lightkeeper/issues",
+  "license": "MIT",
+  "author": "Ashwin Sathian",
+  "keywords": [
+    "pinball",
+    "game",
+    "webgl2",
+    "physics",
+    "typescript",
+    "pwa",
+    "cloudflare-workers",
+    "web-audio"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
   "private": true,
   "type": "module",
   "scripts": {

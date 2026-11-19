@@ -1,6 +1,13 @@
 # Lightkeeper
 
+[![CI](https://github.com/AshwinSathian/lightkeeper/actions/workflows/ci.yml/badge.svg)](https://github.com/AshwinSathian/lightkeeper/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Play](https://img.shields.io/badge/play-lightkeeper.ashwinsathian.com-orange.svg)](https://lightkeeper.ashwinsathian.com)
+
 A pinball table for the browser, live at **https://lightkeeper.ashwinsathian.com**. A lighthouse on a night sea, with a ramp, an orbit, three pop bumpers, a bank of drop targets and three-ball multiball. It plays on phones, tablets and desktops, installs as an app, and works offline after the first visit.
+
+<p align="center">
+  <img src="docs/desktop.jpg" alt="Lightkeeper on a desktop: the dot-matrix score display and game status on the left, the lighthouse table tilted like a cabinet on the right" width="72%">
+  <img src="docs/phone_play.jpg" alt="Lightkeeper on a phone, mid-game" width="24%">
+</p>
 
 ## Playing
 
@@ -41,6 +48,23 @@ npm run deploy    # build + wrangler deploy (static assets on Cloudflare Workers
 
 `scripts/` holds the tools used while tuning and checking: `reach.ts` and `angle.ts` map which shots each flipper can make, `shoot.ts` takes screenshots at five screen sizes, `flow.ts` plays a full game in a browser, and `perf.ts` measures frame times with the CPU throttled 4x.
 
+## Layout
+
+| Path | What's in it |
+|---|---|
+| `src/table.ts` | Every wall, bumper, sensor and lamp, in table units |
+| `src/physics.ts`, `src/math.ts` | Fixed-step physics and the deterministic sine, cosine and PRNG |
+| `src/game.ts` | Rules, scoring, modes, lamp states, display messages |
+| `src/replay.ts` | Replay codec |
+| `src/bake.ts`, `src/gl.ts`, `src/dmd.ts` | Painting, WebGL compositing, the dot-matrix display |
+| `src/audio.ts`, `src/input.ts`, `src/main.ts` | Sound, input, the game loop and UI |
+| `public/` | Font, icons, manifest, service worker, cache headers |
+| `docs/PLAN.md` | The plan the game was built from |
+
 ## Credits
 
 Type: [Big Shoulders Display](https://github.com/xotypeco/big_shoulders), SIL Open Font License (`public/fonts/OFL.txt`).
+
+## License
+
+Code: [MIT](LICENSE). Font: SIL Open Font License.
