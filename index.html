@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Lightkeeper</title>
+<meta name="description" content="Lightkeeper is a pinball table for the browser: a lighthouse on a night sea, a ramp, an orbit, three-ball multiball and timed watches. Plays on phone, tablet and desktop.">
+<meta name="theme-color" content="#070d18">
+<meta name="color-scheme" content="dark">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:title" content="Lightkeeper">
+<meta property="og:description" content="A pinball table for the browser. A lighthouse, a night sea, multiball.">
+<meta property="og:image" content="https://lightkeeper.ashwinsathian.com/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/bigshoulders.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<div id="dmdframe" aria-hidden="true"></div>
+<canvas id="gl" aria-label="Pinball table" role="img"></canvas>
+<div id="stage" aria-hidden="true"></div>
+
+<section id="panel">
+  <div id="menu">
+    <div class="modes" role="radiogroup" aria-label="Game">
+      <button role="radio" data-mode="classic" aria-checked="true"><b>3 balls</b><span>The standard game</span><em data-best="classic"></em></button>
+      <button role="radio" data-mode="timed" aria-checked="false"><b>3 minutes</b><span>Unlimited balls, against the clock</span><em data-best="timed"></em></button>
+      <button role="radio" data-mode="practice" aria-checked="false"><b>Practice</b><span>Every drain is saved. No scores kept</span></button>
+    </div>
+    <p class="modedesc" id="modedesc"></p>
+    <button id="play" class="play"><span>Play</span></button>
+    <nav class="links">
+      <button data-open="help">How to play</button>
+      <button data-open="scores">High scores</button>
+      <button data-open="settings">Settings</button>
+    </nav>
+    <p class="keyhint">Enter to play</p>
+  </div>
+  <div id="info" hidden>
+    <dl>
+      <div><dt>Ball</dt><dd id="i-ball">1</dd></div>
+      <div><dt>Bonus</dt><dd id="i-mult">1×</dd></div>
+      <div><dt>Locks</dt><dd id="i-locks">0 of 3</dd></div>
+      <div><dt>Ramps</dt><dd id="i-ramps">0</dd></div>
+    </dl>
+    <ol class="watches" aria-label="Watches">
+      <li data-w="fog">Fog</li><li data-w="squall">Squall</li><li data-w="rescue">Rescue</li><li data-w="night">Long Night</li>
+    </ol>
+    <div class="keys">
+      <p><kbd>Z</kbd> <kbd>/</kbd> flippers <span class="or">or</span> <kbd>Shift</kbd></p>
+      <p><kbd>Space</kbd> hold to pull, let go to launch</p>
+      <p><kbd>↑</kbd> <kbd>X</kbd> <kbd>.</kbd> nudge</p>
+      <p><kbd>Esc</kbd> pause</p>
+    </div>
+  </div>
+</section>
+
+<button id="pause" class="icon" aria-label="Pause" hidden><svg viewBox="0 0 20 20" width="20" height="20"><rect x="5" y="4" width="3.2" height="12" rx="1"/><rect x="11.8" y="4" width="3.2" height="12" rx="1"/></svg></button>
+
+<div id="hint" hidden>
+  <div><b>Left flipper</b></div>
+  <div><b>Right flipper</b><span>Hold to pull the plunger, let go to launch</span></div>
+  <p>Flick upward to nudge</p>
+</div>
+
+<div id="replaybar" hidden>
+  <span class="dot"></span><span>Replay</span>
+  <button id="rspeed">1×</button>
+  <button id="rexit">Exit</button>
+</div>
+
+<dialog id="paused" class="sheet">
+  <h2>Paused</h2>
+  <div class="stack">
+    <button class="primary" data-act="resume">Resume</button>
+    <button data-act="restart">Restart</button>
+    <button data-open="settings">Settings</button>
+    <button data-act="quit">Quit to menu</button>
+  </div>
+</dialog>
+
+<dialog id="over" class="sheet">
+  <h2>Game over</h2>
+  <p class="final" id="o-score">0</p>
+  <p class="note" id="o-note"></p>
+  <form id="initials" hidden>
+    <label for="o-init">Initials for the high score table</label>
+    <div class="initrow">
+      <input id="o-init" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" pattern="[A-Za-z0-9]{1,3}" required>
+      <button class="primary" type="submit">Save</button>
+    </div>
+  </form>
+  <div class="stack">
+    <button class="primary" data-act="again">Play again</button>
+    <button data-act="replay">Watch the replay</button>
+    <button data-act="share">Copy replay link</button>
+    <button data-act="quit">Menu</button>
+  </div>
+</dialog>
+
+<dialog id="help" class="sheet card">
+  <h2>How to play</h2>
+  <ol class="rules">
+    <li><b>Skill shot.</b> Plunge so the ball drops through the flashing lane at the top.</li>
+    <li><b>S, E, A lanes.</b> Roll through all three to raise the end-of-ball bonus, up to 5×. The flippers move the lit lanes.</li>
+    <li><b>Lock and multiball.</b> Knock down the three red targets to light Lock, then shoot the lamp room, the cup on the upper left. Three locks start multiball, where every ramp and orbit is a jackpot.</li>
+    <li><b>Watches.</b> With no lock lit, the lamp room starts a 30-second watch: Fog (40 spinner turns), Squall (30 bumper hits) or Rescue (follow the lit shot). Finish two for an extra ball and all three for Long Night.</li>
+    <li><b>Kickback.</b> The left outlane kicks the ball back once. Three ramps relight it.</li>
+    <li><b>Nudge.</b> A nudge can save a ball. Three in quick succession and the table warns you; the third warning tilts it.</li>
+  </ol>
+  <h3>Controls</h3>
+  <ul class="controls">
+    <li><b>Touch</b> Left and right halves of the screen work the flippers. With the ball on the plunger, hold the right half and let go to launch. Flick up to nudge.</li>
+    <li><b>Keys</b> Z and / (or the Shift keys) flip. Hold Space to pull the plunger. Up arrow, X and full stop nudge. Esc pauses.</li>
+    <li><b>Gamepad</b> Bumpers or triggers flip, A launches, Y nudges.</li>
+  </ul>
+  <button class="primary close" data-close>Done</button>
+</dialog>
+
+<dialog id="scores" class="sheet">
+  <h2>High scores</h2>
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="classic" aria-selected="true">3 balls</button>
+    <button role="tab" data-tab="timed" aria-selected="false">3 minutes</button>
+  </div>
+  <ol id="s-list" class="board"></ol>
+  <button class="primary close" data-close>Done</button>
+</dialog>
+
+<dialog id="settings" class="sheet">
+  <h2>Settings</h2>
+  <label class="row"><span>Volume</span><input type="range" id="s-vol" min="0" max="1" step="0.05"></label>
+  <label class="row" id="s-vib-row"><span>Vibration</span><input type="checkbox" id="s-vib" role="switch"></label>
+  <div class="row"><span>Table view</span>
+    <div class="seg" data-setting="camera"><button data-v="auto">Auto</button><button data-v="flat">Flat</button><button data-v="tilt">Tilted</button></div>
+  </div>
+  <div class="row"><span>Effects</span>
+    <div class="seg" data-setting="fx"><button data-v="auto">Auto</button><button data-v="full">Full</button><button data-v="light">Light</button></div>
+  </div>
+  <button class="danger" id="s-clear">Clear high scores</button>
+  <p class="credit">Made by Ashwin Sathian. Type is Big Shoulders Display (SIL OFL).</p>
+  <button class="primary close" data-close>Done</button>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="nogl" hidden><p>Lightkeeper needs WebGL 2, which this browser doesn't offer. A current Chrome, Safari, Firefox or Edge will run it.</p></div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

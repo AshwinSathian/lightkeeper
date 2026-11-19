@@ -145,7 +145,7 @@ export const LAMPS: LampDef[] = [
   { id: 'inL', x: 88, y: 888, shape: 'dot', s: 6, color: WHITE },
   { id: 'inR', x: 472, y: 888, shape: 'dot', s: 6, color: WHITE },
   { id: 'fog', x: 196, y: 724, shape: 'tri', s: 13, color: WHITE },
-  { id: 'squall', x: 280, y: 648, shape: 'tri', s: 13, color: WHITE },
+  { id: 'squall', x: 280, y: 624, shape: 'tri', s: 13, color: WHITE },
   { id: 'rescue', x: 364, y: 724, shape: 'tri', s: 13, color: WHITE },
   { id: 'night', x: 280, y: 734, shape: 'lantern', s: 15, color: VIOLET },
   { id: 'x2', x: 226, y: 905, shape: 'bar', s: 12, color: AMBER },
