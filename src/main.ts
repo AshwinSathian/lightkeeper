@@ -59,7 +59,7 @@ function doLayout() {
     const side = Math.max(260, Math.min(440, vw - tw - gap - pad * 2));
     const x0 = Math.max(pad, (vw - (side + gap + tw)) / 2);
     tx = x0 + side + gap; ty = pad;
-    dw = side; dh = side / 4; dx = x0; dy = pad + Math.max(0, (th - dh - 440) * 0.4);
+    dw = side; dh = side / 4; dx = x0; dy = Math.max(pad, (vh - dh - 28 - panel.scrollHeight) / 2);
     Object.assign(panel.style, { left: dx + 'px', top: dy + dh + 28 + 'px', width: side + 'px', bottom: pad + 'px', right: '', padding: '' });
     Object.assign(pause.style, { left: tx + tw - 56 + 'px', top: ty + 12 + 'px' });
   } else if (vw > vh) {
@@ -74,14 +74,14 @@ function doLayout() {
   } else {
     layout = 'tall';
     dh = Math.max(52, Math.min(130, vh * 0.085)); dw = dh * 4;
-    if (dw > vw - pad * 2 - 56) { dw = vw - pad * 2 - 56; dh = dw / 4; }
+    if (dw > vw - pad * 2 - 112) { dw = vw - pad * 2 - 112; dh = dw / 4; }
     dy = st + 8; dx = (vw - dw) / 2;
     const top = dy + dh + 10;
     const avail = vh - top - Math.max(sb, 6);
     th = Math.min(avail, (vw - 8) / ratio); tw = th * ratio;
     tx = (vw - tw) / 2; ty = top;
     Object.assign(panel.style, { left: '', top: '', width: '', bottom: '', right: '', padding: '' });
-    Object.assign(pause.style, { left: Math.min(vw - 52, dx + dw + 8) + 'px', top: dy + (dh - 44) / 2 + 'px' });
+    Object.assign(pause.style, { left: dx + dw + 12 + 'px', top: dy + (dh - 44) / 2 + 'px' });
   }
   follow = th > vh + 2;
   body.classList.remove('tall', 'wide', 'short');
@@ -121,6 +121,7 @@ function newSession(kind: Kind, mode: Mode, seed = (Math.random() * 2 ** 32) >>>
 }
 
 function startDemo() {
+  queueMicrotask(doLayout);
   sess = newSession('demo', 'practice', 12345);
   body.classList.remove('playing', 'replay', 'over');
   $('#pause').hidden = true;
@@ -132,6 +133,7 @@ function startDemo() {
 }
 
 function startGame(mode: Mode = settings.mode) {
+  queueMicrotask(doLayout);
   closeDialogs();
   sess = newSession('play', mode);
   paused = false;
@@ -174,6 +176,7 @@ async function wake(on: boolean) {
 const pollPads = bindInput(stage, onAction, () => !!sess?.game.world.laneBall() && sess.kind === 'play', () => sess?.kind === 'play' && !paused && !sess.game.over && !anyDialog());
 
 function onAction(a: Action, t: number) {
+  if (layout === 'short' && matchMedia('(pointer: coarse)').matches && sess.kind === 'play') return;
   audio.unlock();
   if (a === 'any') return;
   if (a === 'pause') {
@@ -502,7 +505,6 @@ function updateInfo() {
   const key = [g.ball, g.mult, g.locks, g.lockLit, g.ramps, g.watch, [...g.watchDone].join(), g.mode, g.extraBalls].join('|');
   if (key === infoKey) return;
   infoKey = key;
-  $('#i-ball').textContent = g.mode === 'classic' ? `${g.ball} of ${g.balls}` : g.mode === 'timed' ? '∞' : '∞';
   $('#i-mult').textContent = `${g.mult}×`;
   $('#i-locks').textContent = g.lockLit ? 'Lit' : `${g.locks} of 3`;
   $('#i-ramps').textContent = String(g.ramps);

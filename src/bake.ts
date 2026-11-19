@@ -366,10 +366,10 @@ function paintOver(k: number): HTMLCanvasElement {
     g.fillStyle = C.paper; g.fillRect(x, 1140, 108, 56);
     g.strokeStyle = 'rgba(0,0,0,0.4)'; g.lineWidth = 1; g.strokeRect(x, 1140, 108, 56);
   }
-  const cardL = ['SEA LANES  BONUS X', 'TARGETS  LIGHT LOCK', '3 LOCKS  MULTIBALL'];
-  const cardR = ['LAMP ROOM  STARTS', 'A WATCH  FINISH ALL', 'FOR LONG NIGHT'];
-  cardL.forEach((s, i) => text(g, s, 88, 1154 + i * 14, 9, C.ink, 700, 0, 0.04));
-  cardR.forEach((s, i) => text(g, s, 472, 1154 + i * 14, 9, C.ink, 700, 0, 0.04));
+  const cardL = ['3 LOCKS', 'MULTIBALL'];
+  const cardR = ['LAMP ROOM', 'WATCHES'];
+  cardL.forEach((s, i) => text(g, s, 88, 1158 + i * 20, 15, C.ink, 800, 0, 0.04));
+  cardR.forEach((s, i) => text(g, s, 472, 1158 + i * 20, 15, C.ink, 800, 0, 0.04));
   // Shooter lane housing.
   g.fillStyle = '#121b2c'; g.fillRect(541, 1204, 38, 30);
   return c;

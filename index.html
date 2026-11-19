@@ -43,7 +43,6 @@
   </div>
   <div id="info" hidden>
     <dl>
-      <div><dt>Ball</dt><dd id="i-ball">1</dd></div>
       <div><dt>Bonus</dt><dd id="i-mult">1×</dd></div>
       <div><dt>Locks</dt><dd id="i-locks">0 of 3</dd></div>
       <div><dt>Ramps</dt><dd id="i-ramps">0</dd></div>
@@ -91,15 +90,14 @@
   <form id="initials" hidden>
     <label for="o-init">Initials for the high score table</label>
     <div class="initrow">
-      <input id="o-init" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" pattern="[A-Za-z0-9]{1,3}" required>
+      <input id="o-init" placeholder="AAA" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" pattern="[A-Za-z0-9]{1,3}" required>
       <button class="primary" type="submit">Save</button>
     </div>
   </form>
   <div class="stack">
     <button class="primary" data-act="again">Play again</button>
-    <button data-act="replay">Watch the replay</button>
-    <button data-act="share">Copy replay link</button>
-    <button data-act="quit">Menu</button>
+    <div class="pair"><button data-act="replay">Watch replay</button><button data-act="share">Copy link</button></div>
+    <button class="text" data-act="quit">Back to menu</button>
   </div>
 </dialog>
 
@@ -147,6 +145,7 @@
   <button class="primary close" data-close>Done</button>
 </dialog>
 
+<div id="rotate"><p>Turn your phone upright<span>The table needs the height. The game is paused until you do.</span></p></div>
 <div id="toast" role="status" aria-live="polite"></div>
 <div id="nogl" hidden><p>Lightkeeper needs WebGL 2, which this browser doesn't offer. A current Chrome, Safari, Firefox or Edge will run it.</p></div>
 <script type="module" src="/src/main.ts"></script>
